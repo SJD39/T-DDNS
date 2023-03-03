@@ -1,6 +1,6 @@
 # T-DDNS
 
-这是一个在DNSPod上实现DDNS的程序
+这是一个基于腾讯云API3.0在DNSPod上实现DDNS的程序
 
 目前这个项目仍在开发中，敬请期待。
 

@@ -1,0 +1,9 @@
+[
+    {
+        "Domain": "cysm.icu",
+        "SubDomain": "test",
+        "RecordLine": "默认",
+        "RecordType": "AAAA",
+        "TTL": 600
+    }
+]

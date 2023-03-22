@@ -125,3 +125,53 @@ def CreateRecord(Domain, RecordType, RecordLine, Value, SubDomain="@", TTL=600):
     backJson = json.loads(r.text)
 
     return backJson
+
+def ModifyRecord(Domain, RecordType, RecordLine, Value, RecordId, SubDomain="@", TTL=600):
+    api = "https://dnspod.tencentcloudapi.com"
+    timestamp = int(time.time())
+    body = {
+        "Domain": Domain,
+        "RecordType": RecordType,
+        "RecordLine": RecordLine,
+        "RecordId": RecordId,
+        "Value": Value,
+        "SubDomain": SubDomain,
+        "TTL": TTL
+    }
+    headers = {
+        "Content-Type": "application/json; charset=utf-8",
+        "X-TC-Action": "ModifyRecord",
+        "X-TC-Region": "ap-guangzhou",
+        "X-TC-Timestamp": str(timestamp),
+        "X-TC-Version": "2021-03-23",
+        "Host": "dnspod.tencentcloudapi.com",
+        "Authorization": getAuthorization("ModifyRecord", body, timestamp)
+    }
+
+    r = requests.post(api ,data=json.dumps(body), headers=headers)
+    backJson = json.loads(r.text)
+
+    return backJson
+
+def ModifyRecordFields(Domain, RecordId, FieldList):
+    api = "https://dnspod.tencentcloudapi.com"
+    timestamp = int(time.time())
+    body = {
+        "Domain": Domain,
+        "RecordId": RecordId,
+        "FieldList": FieldList
+    }
+    headers = {
+        "Content-Type": "application/json; charset=utf-8",
+        "X-TC-Action": "ModifyRecordFields",
+        "X-TC-Region": "ap-guangzhou",
+        "X-TC-Timestamp": str(timestamp),
+        "X-TC-Version": "2021-03-23",
+        "Host": "dnspod.tencentcloudapi.com",
+        "Authorization": getAuthorization("ModifyRecordFields", body, timestamp)
+    }
+
+    r = requests.post(api ,data=json.dumps(body), headers=headers)
+    backJson = json.loads(r.text)
+
+    return backJson

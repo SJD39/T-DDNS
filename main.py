@@ -1,31 +1,51 @@
 import fun
 import time
 import DNSPod
-import config
+import configFile
 
 while(True):
     time.sleep(10)
-    print("check")
-    configJson = config.readConfig()
+    print("开始检查")
+    ipv6 = fun.getIpv6()
+    config = configFile.readConfig()
 
-    # 循环检查记录和配置值是否一致
-    for record in configJson:
-        print(record)
+    # 循环配置记录
+    for configRecord in config:
+        print(configRecord)
+
         # 获取记录列表
-        DescribeRecordList = DNSPod.DescribeRecordList(record['Domain'], record['SubDomain'])
+        DescribeRecordList = DNSPod.DescribeRecordList(configRecord['Domain'], configRecord['SubDomain'])
         print(DescribeRecordList)
 
+        # 处理获取列表错误
         if "Error" in DescribeRecordList['Response']:
             if DescribeRecordList['Response']['Error']['Code'] == "ResourceNotFound.NoDataOfRecord":
                 # 如果没有记录
                 # 添加记录
                 CreateRecord = DNSPod.CreateRecord(
-                    record['Domain'], 
-                    record['RecordType'], 
-                    record['RecordLine'], 
+                    configRecord['Domain'], 
+                    configRecord['RecordType'], 
+                    configRecord['RecordLine'], 
                     fun.getIpv6(), 
-                    SubDomain=record['SubDomain'], 
-                    TTL=record['TTL']
+                    SubDomain=configRecord['SubDomain'], 
+                    TTL=configRecord['TTL']
                 )
                 print(CreateRecord)
+                continue
         
+        # 判断记录值是否和本机ip一致
+        if DescribeRecordList['Response']['RecordList'][0]['Value'] == fun.getIpv6():
+            continue
+
+        # 修改记录
+        ModifyRecordFields = DNSPod.ModifyRecordFields(
+            configRecord['Domain'],
+            DescribeRecordList['Response']['RecordList'][0]['RecordId'],
+            [
+                {
+                    "Key": "value",
+                    "Value": str(fun.getIpv6())
+                }
+            ]
+        )
+        print(ModifyRecordFields)

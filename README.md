@@ -7,5 +7,5 @@
 使用方法：  
   一、获取腾讯云API密钥  
   二、将API密钥设置为环境变量，变量名为TENCENTCLOUD_SECRET_ID和TENCENTCLOUD_SECRET_KEY  
-  三、修改config.json文件
+  三、修改config.json文件  
   四、运行main.py即可

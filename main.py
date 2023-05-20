@@ -14,7 +14,7 @@ while(True):
         print(configRecord)
 
         # 获取记录列表
-        DescribeRecordList = DNSPod.DescribeRecordList(configRecord['Domain'], configRecord['SubDomain'])
+        DescribeRecordList = DNSPod.DescribeRecordList(configRecord['Domain'], configRecord['SubDomain'], configRecord['RecordType'])
         print(DescribeRecordList)
 
         # 处理获取列表错误

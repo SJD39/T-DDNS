@@ -77,12 +77,13 @@ def getAuthorization(action, params, timestamp):
         + " -d '" + payload + "'")
     return authorization
 
-def DescribeRecordList(Domain, Subdomain):
+def DescribeRecordList(Domain, Subdomain, RecordType):
     api = "https://dnspod.tencentcloudapi.com"
     timestamp = int(time.time())
     body = {
         "Domain": Domain,
-        "Subdomain": Subdomain
+        "Subdomain": Subdomain,
+        "RecordType": RecordType
     }
     headers = {
         "Content-Type": "application/json; charset=utf-8",

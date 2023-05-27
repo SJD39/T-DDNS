@@ -95,7 +95,7 @@ def DescribeRecordList(Domain, Subdomain, RecordType):
         "Authorization": getAuthorization("DescribeRecordList", body, timestamp)
     }
 
-    r = requests.post(api ,data=json.dumps(body), headers=headers)
+    r = requests.post(api ,data=json.dumps(body), headers=headers, timeout=10)
     backJson = json.loads(r.text)
 
     return backJson
@@ -121,7 +121,7 @@ def CreateRecord(Domain, RecordType, RecordLine, Value, SubDomain="@", TTL=600):
         "Authorization": getAuthorization("CreateRecord", body, timestamp)
     }
 
-    r = requests.post(api ,data=json.dumps(body), headers=headers)
+    r = requests.post(api ,data=json.dumps(body), headers=headers, timeout=10)
     backJson = json.loads(r.text)
 
     return backJson
@@ -148,7 +148,7 @@ def ModifyRecord(Domain, RecordType, RecordLine, Value, RecordId, SubDomain="@",
         "Authorization": getAuthorization("ModifyRecord", body, timestamp)
     }
 
-    r = requests.post(api ,data=json.dumps(body), headers=headers)
+    r = requests.post(api ,data=json.dumps(body), headers=headers, timeout=10)
     backJson = json.loads(r.text)
 
     return backJson
@@ -171,7 +171,7 @@ def ModifyRecordFields(Domain, RecordId, FieldList):
         "Authorization": getAuthorization("ModifyRecordFields", body, timestamp)
     }
 
-    r = requests.post(api ,data=json.dumps(body), headers=headers)
+    r = requests.post(api ,data=json.dumps(body), headers=headers, timeout=10)
     backJson = json.loads(r.text)
 
     return backJson

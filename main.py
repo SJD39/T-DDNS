@@ -34,7 +34,7 @@ while(True):
                 continue
         
         # 判断记录值是否和本机ip一致
-        if DescribeRecordList['Response']['RecordList'][0]['Value'] == fun.getIpv6():
+        if DescribeRecordList['Response']['RecordList'][0]['Value'] == ipv6:
             continue
 
         # 修改记录

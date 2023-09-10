@@ -3,19 +3,28 @@ import time
 import DNSPod
 import configFile
 
-while(True):
-    time.sleep(10)
+def main():
     print("开始检查")
-    ipv6 = fun.getIpv6()
-    config = configFile.readConfig()
 
+    # 获取ip地址
+    ip,error = fun.getIpv6()
+    if error != '':
+        print(error)
+        return
+    
+    # 获取配置文件
+    config = configFile.readConfig()
+    print(config)
+    
     # 循环配置记录
     for configRecord in config:
         print(configRecord)
 
         # 获取记录列表
-        DescribeRecordList = DNSPod.DescribeRecordList(configRecord['Domain'], configRecord['SubDomain'], configRecord['RecordType'])
-        print(DescribeRecordList)
+        DescribeRecordList,error = DNSPod.DescribeRecordList(configRecord['Domain'], configRecord['SubDomain'], configRecord['RecordType'])
+        if error != '':
+            print(error)
+            return
 
         # 处理获取列表错误
         if "Error" in DescribeRecordList['Response']:
@@ -26,7 +35,7 @@ while(True):
                     configRecord['Domain'], 
                     configRecord['RecordType'], 
                     configRecord['RecordLine'], 
-                    fun.getIpv6(), 
+                    ip, 
                     SubDomain=configRecord['SubDomain'], 
                     TTL=configRecord['TTL']
                 )
@@ -34,7 +43,7 @@ while(True):
                 continue
         
         # 判断记录值是否和本机ip一致
-        if DescribeRecordList['Response']['RecordList'][0]['Value'] == ipv6:
+        if DescribeRecordList['Response']['RecordList'][0]['Value'] == ip:
             continue
 
         # 修改记录
@@ -44,8 +53,12 @@ while(True):
             [
                 {
                     "Key": "value",
-                    "Value": str(fun.getIpv6())
+                    "Value": str(ip)
                 }
             ]
         )
         print(ModifyRecordFields)
+    
+while(True):
+    time.sleep(10)
+    main()
